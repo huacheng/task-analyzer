@@ -1,6 +1,12 @@
 # Task Analyzer
 
+[中文文档](README_CN.md)
+
 A Claude Code plugin that performs pre-execution task complexity analysis and routes to the most token-efficient execution path.
+
+> *"Standing on the moon, looking at Earth"* — [老王来了@dlw2023](https://www.youtube.com/@dlw2023)
+
+This quote captures the philosophy behind Task Analyzer: step back, see the full picture before acting. Instead of diving into execution immediately, Task Analyzer takes a bird's-eye view of your task — its complexity, the tools available, and the cost of each path — then routes to the most efficient one. Just as standing on the moon reveals Earth's true scale, analyzing a task from above reveals the simplest path through it.
 
 **Classify first, then route** — unlike blind model downgrades, Task Analyzer matches resources to task characteristics with precision.
 
