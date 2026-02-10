@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "description": "Task complexity grading (L0-L4) with automatic token-efficient execution path selection",
   "author": {
-    "name": "local"
+    "name": "huacheng"
   },
   "license": "MIT",
   "skills": "./skills/"
