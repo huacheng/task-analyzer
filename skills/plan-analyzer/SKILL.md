@@ -1,19 +1,19 @@
 ---
-name: task-analyzer
+name: plan-analyzer
 description: Task complexity grading (L0-L4) with automatic token-efficient execution path selection (native tools > low-tier agents > high-tier agents)
-triggers: [ta, task-analyze, analyze-task, task-plan, budget-plan]
+triggers: [pa, plan-analyze, analyze-plan, plan-budget, budget-plan]
 matching: fuzzy
 ---
 
 <Purpose>
-Task Analyzer is a universal pre-execution complexity analyzer for the **entire Claude Code toolchain** — native tools (Read/Edit/Write/Grep/Glob/Bash), built-in agents (Explore/Plan/general-purpose/Bash agent), oh-my-claudecode (OMC) plugin agents, MCP tools, and any other loaded plugin capabilities.
+Plan Analyzer is a universal pre-execution complexity analyzer for the **entire Claude Code toolchain** — native tools (Read/Edit/Write/Grep/Glob/Bash), built-in agents (Explore/Plan/general-purpose/Bash agent), oh-my-claudecode (OMC) plugin agents, MCP tools, and any other loaded plugin capabilities.
 
-Core principle: **classify first, then route**. Assess task complexity, then pick the minimum-cost path that can deliver the required quality. Unlike ecomode (which blindly downgrades model tiers), Task Analyzer matches resources to task characteristics with precision.
+Core principle: **classify first, then route**. Assess task complexity, then pick the minimum-cost path that can deliver the required quality. Unlike ecomode (which blindly downgrades model tiers), Plan Analyzer matches resources to task characteristics with precision.
 </Purpose>
 
 <Use_When>
 - Before starting any non-trivial task (automatically or explicitly)
-- User says "ta", "task-analyze", "analyze-task", "task-plan", "budget-plan"
+- User says "pa", "plan-analyze", "analyze-plan", "plan-budget", "budget-plan"
 - You're unsure whether to do directly or delegate
 - A task has multiple viable approaches and you want the cheapest effective one
 - User is concerned about token usage / subscription quota
@@ -36,7 +36,7 @@ Common token waste patterns in Claude Code sessions:
 6. **Per-file spawning**: Splitting related file changes into N agents instead of batching (~2.5K × (N-1))
 7. **Tool mismatch**: Using Bash grep instead of Grep tool, Bash cat instead of Read tool
 
-Task Analyzer eliminates all of the above through pre-execution analysis.
+Plan Analyzer eliminates all of the above through pre-execution analysis.
 </Why_This_Exists>
 
 <Execution_Policy>
@@ -202,20 +202,20 @@ Then EXECUTE the plan immediately.
 
 ## Integration with OMC Modes (only when oh-my-claudecode is installed)
 
-Task Analyzer works as a PRE-PROCESSOR for OMC modes:
+Plan Analyzer works as a PRE-PROCESSOR for OMC modes:
 
-| OMC Mode | Task Analyzer Role |
+| OMC Mode | Plan Analyzer Role |
 |----------|-------------------|
-| **ecomode** | Task Analyzer classifies first, ecomode further downgrades model tiers |
-| **ultrawork** | Task Analyzer decides IF parallelism is worth it, ultrawork executes |
-| **ralph** | Task Analyzer optimizes agent selection in each iteration |
-| **autopilot** | Task Analyzer pre-screens before autopilot's own planning |
+| **ecomode** | Plan Analyzer classifies first, ecomode further downgrades model tiers |
+| **ultrawork** | Plan Analyzer decides IF parallelism is worth it, ultrawork executes |
+| **ralph** | Plan Analyzer optimizes agent selection in each iteration |
+| **autopilot** | Plan Analyzer pre-screens before autopilot's own planning |
 
-**Without OMC installed**, Task Analyzer is equally effective — it routes directly via native tools and built-in agents.
+**Without OMC installed**, Plan Analyzer is equally effective — it routes directly via native tools and built-in agents.
 
 ## Session-Wide Efficiency Rules
 
-When Task Analyzer is active, these rules apply to ALL subsequent operations:
+When Plan Analyzer is active, these rules apply to ALL subsequent operations:
 
 1. **3-Second Rule**: If you can think through it in ~3 seconds, do it directly — no agent
 2. **File Count Rule**: Files to modify ≤ 1 → direct edit, no agent

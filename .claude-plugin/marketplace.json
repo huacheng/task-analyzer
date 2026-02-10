@@ -1,13 +1,13 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "huacheng",
+  "name": "moonview",
   "description": "Task complexity analysis and token-efficient execution routing for Claude Code",
   "owner": {
     "name": "huacheng"
   },
   "plugins": [
     {
-      "name": "task-analyzer",
+      "name": "plan-analyzer",
       "description": "Task complexity grading (L0-L4) with automatic token-efficient execution path selection — classify first, then route to the minimum-cost tool/agent.",
       "version": "1.0.1",
       "author": {
@@ -15,7 +15,7 @@
       },
       "source": "./",
       "category": "productivity",
-      "homepage": "https://github.com/huacheng/task-analyzer",
+      "homepage": "https://github.com/huacheng/moonview",
       "tags": ["token-efficiency", "task-analysis", "cost-optimization", "agent-routing"]
     }
   ]

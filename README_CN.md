@@ -1,4 +1,4 @@
-# Task Analyzer（任务分析器）
+# Plan Analyzer（任务分析器）
 
 [English](README.md)
 
@@ -6,9 +6,9 @@
 
 > *"站在月球看地球"* — [老王来了@dlw2023](https://www.youtube.com/@dlw2023)
 
-这句话正是 Task Analyzer 的设计理念：先退一步，看清全貌，再行动。不急于一头扎进执行，而是站在高处俯瞰任务 — 它的复杂度、可用的工具、每条路径的成本 — 然后选择最高效的那条。正如站在月球上才能看清地球的真实尺度，站在全局视角分析任务，才能找到最简洁的执行路径。
+这句话正是 Plan Analyzer 的设计理念：先退一步，看清全貌，再行动。不急于一头扎进执行，而是站在高处俯瞰任务 — 它的复杂度、可用的工具、每条路径的成本 — 然后选择最高效的那条。正如站在月球上才能看清地球的真实尺度，站在全局视角分析任务，才能找到最简洁的执行路径。
 
-**先分级，再路由** — 不同于盲目降级模型，Task Analyzer 根据任务特征精确匹配资源。
+**先分级，再路由** — 不同于盲目降级模型，Plan Analyzer 根据任务特征精确匹配资源。
 
 ## 安装
 
@@ -16,10 +16,10 @@
 
 ```bash
 # 添加 marketplace 源
-/plugin marketplace add https://github.com/huacheng/task-analyzer
+/plugin marketplace add https://github.com/huacheng/moonview
 
 # 安装插件
-/plugin install task-analyzer
+/plugin install plan-analyzer
 ```
 
 ### 手动安装
@@ -27,17 +27,17 @@
 将仓库克隆到 Claude Code 插件目录：
 
 ```bash
-git clone https://github.com/huacheng/task-analyzer.git ~/.claude/plugins/local/task-analyzer
+git clone https://github.com/huacheng/moonview.git ~/.claude/plugins/local/plan-analyzer
 ```
 
 然后在 `~/.claude/plugins/installed_plugins.json` 中注册：
 
 ```json
 {
-  "task-analyzer@local": [
+  "plan-analyzer@local": [
     {
       "scope": "user",
-      "installPath": "~/.claude/plugins/local/task-analyzer",
+      "installPath": "~/.claude/plugins/local/plan-analyzer",
       "version": "1.0.0"
     }
   ]
@@ -49,16 +49,16 @@ git clone https://github.com/huacheng/task-analyzer.git ~/.claude/plugins/local/
 通过以下任意触发词调用：
 
 ```
-/task-analyzer refactor auth to use JWT
-ta: add validation to the login form
-task-analyze: refactor the database module
+/plan-analyzer refactor auth to use JWT
+pa: add validation to the login form
+plan-analyze: refactor the database module
 ```
 
-**别名：** `ta`, `task-analyze`, `analyze-task`, `task-plan`, `budget-plan`
+**别名：** `pa`, `plan-analyze`, `analyze-plan`, `plan-budget`, `budget-plan`
 
 ## 工作原理
 
-Task Analyzer 是一个通用的预执行复杂度分析器，覆盖**整个 Claude Code 工具链**：
+Plan Analyzer 是一个通用的预执行复杂度分析器，覆盖**整个 Claude Code 工具链**：
 
 - 原生工具（Read / Edit / Write / Grep / Glob / Bash）
 - 内置 agent（Explore / Plan / general-purpose / Bash agent）
@@ -137,20 +137,20 @@ Layer 6: 编排模式 (ultrawork / autopilot / ralph)
 
 ## 与 OMC 模式集成
 
-Task Analyzer 作为 OMC 编排模式的**预处理器**：
+Plan Analyzer 作为 OMC 编排模式的**预处理器**：
 
-| 模式 | Task Analyzer 角色 |
+| 模式 | Plan Analyzer 角色 |
 |------|-------------------|
 | **ecomode** | 先分级，ecomode 再进一步降级 tier |
 | **ultrawork** | 决定是否值得并行化 |
 | **ralph** | 优化每次迭代的 agent 选择 |
 | **autopilot** | 在 autopilot 规划前做预筛选 |
 
-未安装 OMC 时，Task Analyzer 通过原生工具和内置 agent 同样有效。
+未安装 OMC 时，Plan Analyzer 通过原生工具和内置 agent 同样有效。
 
 ## 与 Ecomode 对比
 
-| 方面 | Task Analyzer | Ecomode |
+| 方面 | Plan Analyzer | Ecomode |
 |------|--------------|---------|
 | 范围 | 全工具链 | 仅 OMC agent |
 | 方式 | 先分级再路由 | 盲目降级 tier |
@@ -158,7 +158,7 @@ Task Analyzer 作为 OMC 编排模式的**预处理器**：
 | 批处理 | 合并相关文件 | 无批处理意识 |
 | 无 OMC | 完全可用 | 不适用 |
 
-**最佳组合：** Task Analyzer + Ecomode 一起使用提供最高 token 效率。
+**最佳组合：** Plan Analyzer + Ecomode 一起使用提供最高 token 效率。
 
 ## 许可证
 

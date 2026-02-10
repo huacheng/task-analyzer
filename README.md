@@ -1,4 +1,4 @@
-# Task Analyzer
+# Plan Analyzer
 
 [中文文档](README_CN.md)
 
@@ -6,9 +6,9 @@ A Claude Code plugin that performs pre-execution task complexity analysis and ro
 
 > *"Standing on the moon, looking at Earth"* — [老王来了@dlw2023](https://www.youtube.com/@dlw2023)
 
-This quote captures the philosophy behind Task Analyzer: step back, see the full picture before acting. Instead of diving into execution immediately, Task Analyzer takes a bird's-eye view of your task — its complexity, the tools available, and the cost of each path — then routes to the most efficient one. Just as standing on the moon reveals Earth's true scale, analyzing a task from above reveals the simplest path through it.
+This quote captures the philosophy behind Plan Analyzer: step back, see the full picture before acting. Instead of diving into execution immediately, Plan Analyzer takes a bird's-eye view of your task — its complexity, the tools available, and the cost of each path — then routes to the most efficient one. Just as standing on the moon reveals Earth's true scale, analyzing a task from above reveals the simplest path through it.
 
-**Classify first, then route** — unlike blind model downgrades, Task Analyzer matches resources to task characteristics with precision.
+**Classify first, then route** — unlike blind model downgrades, Plan Analyzer matches resources to task characteristics with precision.
 
 ## Installation
 
@@ -16,10 +16,10 @@ This quote captures the philosophy behind Task Analyzer: step back, see the full
 
 ```bash
 # Add marketplace source
-/plugin marketplace add https://github.com/huacheng/task-analyzer
+/plugin marketplace add https://github.com/huacheng/moonview
 
 # Install the plugin
-/plugin install task-analyzer
+/plugin install plan-analyzer
 ```
 
 ### Manual Installation
@@ -27,17 +27,17 @@ This quote captures the philosophy behind Task Analyzer: step back, see the full
 Clone the repository into your Claude Code plugins directory:
 
 ```bash
-git clone https://github.com/huacheng/task-analyzer.git ~/.claude/plugins/local/task-analyzer
+git clone https://github.com/huacheng/moonview.git ~/.claude/plugins/local/plan-analyzer
 ```
 
 Then register it in `~/.claude/plugins/installed_plugins.json`:
 
 ```json
 {
-  "task-analyzer@local": [
+  "plan-analyzer@local": [
     {
       "scope": "user",
-      "installPath": "~/.claude/plugins/local/task-analyzer",
+      "installPath": "~/.claude/plugins/local/plan-analyzer",
       "version": "1.0.0"
     }
   ]
@@ -49,16 +49,16 @@ Then register it in `~/.claude/plugins/installed_plugins.json`:
 Invoke the skill with any of these triggers:
 
 ```
-/task-analyzer refactor auth to use JWT
-ta: add validation to the login form
-task-analyze: refactor the database module
+/plan-analyzer refactor auth to use JWT
+pa: add validation to the login form
+plan-analyze: refactor the database module
 ```
 
-**Aliases:** `ta`, `task-analyze`, `analyze-task`, `task-plan`, `budget-plan`
+**Aliases:** `pa`, `plan-analyze`, `analyze-plan`, `plan-budget`, `budget-plan`
 
 ## How It Works
 
-Task Analyzer is a universal pre-execution complexity analyzer for the **entire Claude Code toolchain**:
+Plan Analyzer is a universal pre-execution complexity analyzer for the **entire Claude Code toolchain**:
 
 - Native tools (Read / Edit / Write / Grep / Glob / Bash)
 - Built-in agents (Explore / Plan / general-purpose / Bash agent)
@@ -137,20 +137,20 @@ Layer 6: Orchestration modes (ultrawork / autopilot / ralph)
 
 ## Integration with OMC Modes
 
-Task Analyzer works as a **pre-processor** for OMC orchestration modes:
+Plan Analyzer works as a **pre-processor** for OMC orchestration modes:
 
-| Mode | Task Analyzer Role |
+| Mode | Plan Analyzer Role |
 |------|-------------------|
 | **ecomode** | Classifies first, ecomode further downgrades tiers |
 | **ultrawork** | Decides IF parallelism is worth it |
 | **ralph** | Optimizes agent selection per iteration |
 | **autopilot** | Pre-screens before autopilot planning |
 
-Without OMC installed, Task Analyzer is equally effective via native tools and built-in agents.
+Without OMC installed, Plan Analyzer is equally effective via native tools and built-in agents.
 
 ## Compared to Ecomode
 
-| Aspect | Task Analyzer | Ecomode |
+| Aspect | Plan Analyzer | Ecomode |
 |--------|--------------|---------|
 | Scope | All tools | OMC agents only |
 | Approach | Classify first, then route | Blindly downgrade tiers |
@@ -158,7 +158,7 @@ Without OMC installed, Task Analyzer is equally effective via native tools and b
 | Batching | Groups related files | No batching |
 | Without OMC | Fully functional | Not applicable |
 
-**Best together:** Task Analyzer + Ecomode provides maximum token efficiency.
+**Best together:** Plan Analyzer + Ecomode provides maximum token efficiency.
 
 ## License
 
