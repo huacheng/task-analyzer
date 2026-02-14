@@ -7,13 +7,13 @@
   },
   "plugins": [
     {
-      "name": "ai-cli-task",
+      "name": "moonview",
       "description": "Structured task lifecycle management with 8 skills: init, plan, check, exec, merge, report, auto, cancel. Git-integrated workflow with branch-per-task, worktree support, and annotation-driven planning.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": {
         "name": "huacheng"
       },
-      "source": "./plugins/ai-cli-task",
+      "source": "./plugins/moonview",
       "category": "productivity",
       "homepage": "https://github.com/huacheng/ai-cli-online",
       "tags": ["task-management", "annotation", "plan", "execution", "lifecycle", "git-workflow"]
