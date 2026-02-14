@@ -1,164 +1,113 @@
-# Plan Analyzer
+# Moonview
 
 [中文文档](README_CN.md)
 
-A Claude Code plugin that performs pre-execution task complexity analysis and routes to the most token-efficient execution path.
+A Claude Code plugin marketplace for structured task lifecycle management.
 
 > *"Standing on the moon, looking at Earth"* — [老王来了@dlw2023](https://www.youtube.com/@dlw2023)
 
-This quote captures the philosophy behind Plan Analyzer: step back, see the full picture before acting. Instead of diving into execution immediately, Plan Analyzer takes a bird's-eye view of your task — its complexity, the tools available, and the cost of each path — then routes to the most efficient one. Just as standing on the moon reveals Earth's true scale, analyzing a task from above reveals the simplest path through it.
+## Plugins
 
-**Classify first, then route** — unlike blind model downgrades, Plan Analyzer matches resources to task characteristics with precision.
+### ai-cli-task
+
+Structured task lifecycle management with 8 sub-commands. Git-integrated branch-per-task workflow with worktree support, annotation-driven planning, and autonomous execution loop.
+
+```
+/ai-cli-task <subcommand> [args]
+```
+
+#### Sub-commands
+
+| Command | Description |
+|---------|-------------|
+| `init` | Create task module — directory, `.index.md`, git branch, optional worktree |
+| `plan` | Generate implementation plan from `.target.md`, or process frontend annotations |
+| `check` | Decision gate at 3 checkpoints: post-plan, mid-exec, post-exec |
+| `exec` | Execute plan step-by-step with per-step verification |
+| `merge` | Merge task branch to main with conflict resolution (up to 3 retries) |
+| `report` | Generate completion report + distill experience to knowledge base |
+| `auto` | Autonomous loop: plan → check → exec → merge → report |
+| `cancel` | Cancel task, optionally cleanup worktree and branch |
+
+#### Task Lifecycle
+
+```
+draft → planning → review → executing → complete
+                ↗            ↘
+         re-planning    ←    blocked
+```
+
+Every task lives in a `TASK/<module>/` directory with structured metadata, and runs on a dedicated `task/<module>` git branch.
+
+#### Features
+
+- **State machine** — 8 statuses with validated transitions, no deadlocks
+- **Git integration** — branch-per-task, worktree isolation for parallel execution
+- **Annotation-driven** — frontend Plan panel annotations (Insert/Delete/Replace/Comment) processed into plan updates
+- **Auto mode** — single-session autonomous orchestration with stall detection, context quota management, and safety limits
+- **Multi-domain** — 17+ task types (software, image-processing, video-production, DSP, literary, screenwriting, science, mechatronics, ai-skill, ...)
+- **Experience KB** — lessons from completed tasks distilled to `TASK/.experience/` for cross-task learning
+- **Concurrency protection** — lockfile-based mutual exclusion with stale lock recovery
 
 ## Installation
 
-### From Marketplace
-
 ```bash
 # Add marketplace source
-/plugin marketplace add https://github.com/huacheng/moonview
+/plugin marketplace add huacheng/moonview
 
-# Install the plugin
-/plugin install plan-analyzer
+# Install plugin
+/plugin install ai-cli-task@moonview
 ```
 
-### Manual Installation
-
-Clone the repository into your Claude Code plugins directory:
+## Quick Start
 
 ```bash
-git clone https://github.com/huacheng/moonview.git ~/.claude/plugins/local/plan-analyzer
+# 1. Initialize a task
+/ai-cli-task init auth-refactor --title "Refactor auth to JWT"
+
+# 2. Write requirements in TASK/auth-refactor/.target.md, then generate plan
+/ai-cli-task plan auth-refactor --generate
+
+# 3. Review plan quality
+/ai-cli-task check auth-refactor --checkpoint post-plan
+
+# 4. Execute the plan
+/ai-cli-task exec auth-refactor
+
+# 5. Verify completion
+/ai-cli-task check auth-refactor --checkpoint post-exec
+
+# 6. Merge to main
+/ai-cli-task merge auth-refactor
+
+# 7. Generate report
+/ai-cli-task report auth-refactor
+
+# Or run the full lifecycle automatically:
+/ai-cli-task auto auth-refactor --start
 ```
 
-Then register it in `~/.claude/plugins/installed_plugins.json`:
-
-```json
-{
-  "plan-analyzer@local": [
-    {
-      "scope": "user",
-      "installPath": "~/.claude/plugins/local/plan-analyzer",
-      "version": "1.0.0"
-    }
-  ]
-}
-```
-
-## Usage
-
-Invoke the skill with any of these triggers:
+## TASK/ Directory Structure
 
 ```
-/plan-analyzer refactor auth to use JWT
-pa: add validation to the login form
-plan-analyze: refactor the database module
+TASK/
+├── .index.md                  # Root index (task module listing)
+├── .experience/               # Cross-task knowledge base
+└── <module>/
+    ├── .index.md              # Task metadata (YAML frontmatter)
+    ├── .target.md             # Requirements (human-authored)
+    ├── .summary.md            # Condensed context summary
+    ├── .analysis/             # Evaluation history
+    ├── .test/                 # Test criteria & results
+    ├── .bugfix/               # Issue history
+    ├── .notes/                # Research notes
+    ├── .report.md             # Completion report
+    └── *.md                   # User-authored plan documents
 ```
 
-**Aliases:** `pa`, `plan-analyze`, `analyze-plan`, `plan-budget`, `budget-plan`
+## Related
 
-## How It Works
-
-Plan Analyzer is a universal pre-execution complexity analyzer for the **entire Claude Code toolchain**:
-
-- Native tools (Read / Edit / Write / Grep / Glob / Bash)
-- Built-in agents (Explore / Plan / general-purpose / Bash agent)
-- oh-my-claudecode (OMC) plugin agents
-- MCP tools and other loaded plugin capabilities
-
-### Step 1: Classify Complexity (L0–L4)
-
-| Level | Name | Criteria | Examples |
-|-------|------|----------|---------|
-| **L0** | Trivial | Single file, <10 lines, obvious change | Fix typo, update config value, add import |
-| **L1** | Simple | Single file, clear logic, <50 lines | Add a function, fix a clear bug, add validation |
-| **L2** | Moderate | 2-3 files, straightforward pattern | Add API endpoint + handler, refactor one module |
-| **L3** | Complex | 4+ files, cross-cutting concerns | New feature with DB + API + tests, major refactor |
-| **L4** | Massive | System-wide, architectural, 10+ files | New subsystem, full stack feature, migration |
-
-### Step 2: Route to Minimum-Cost Strategy
-
-| Level | Strategy | Agents | Verification |
-|-------|----------|--------|-------------|
-| **L0** | Native tools directly | 0 | None |
-| **L1** | Native tools or 1 lightweight agent | 0-1 | `lsp_diagnostics` |
-| **L2** | 1-2 agents sequential | 1-2 | Build / test run |
-| **L3** | 2-4 agents, may parallel | 2-4 | Full test suite + review |
-| **L4** | Orchestration mode | 3-6 | Full verification protocol |
-
-### Step 3: Output & Execute
-
-```
-[TASK ANALYSIS] L2: Add health endpoint with DB check
-Strategy: single-agent
-Toolchain: native+omc
-Steps:
-  1. Read existing route patterns -> Read tool
-  2. Implement endpoint + handler -> executor-low:haiku
-  3. Verify -> lsp_diagnostics + test run
-Verification: build check
-Est. overhead: low
-```
-
-## Tool Selection Layers
-
-From cheapest to most expensive:
-
-```
-Layer 0: Native tools (Read/Edit/Write/Grep/Glob/Bash)
-Layer 1: Built-in lightweight agents (Explore:haiku)
-Layer 2: OMC low-tier agents (executor-low:haiku)
-Layer 3: Built-in general agents (general-purpose:sonnet)
-Layer 4: OMC mid-tier agents (executor:sonnet)
-Layer 5: OMC high-tier agents (executor-high:opus)
-Layer 6: Orchestration modes (ultrawork / autopilot / ralph)
-```
-
-## Quick Rules
-
-| Rule | Description |
-|------|-------------|
-| **File Count** | Files to modify ≤ 1 → direct edit, no agent |
-| **Known Path** | File path already known → `Read` directly, never Explore agent |
-| **Keyword Search** | Use `Grep`/`Glob` directly, never Bash grep/find |
-| **Batching** | Group related changes into ONE agent prompt (max 5 files) |
-| **Verification** | Match to complexity (L0=none, L1=lsp_diagnostics, L2+=tests) |
-| **Model Tier** | Try cheapest first (haiku → sonnet → opus), escalate on failure |
-| **MCP Tools** | Call `lsp_diagnostics`, `ast_grep_search` directly, no agent needed |
-
-## Anti-Waste Patterns
-
-| Waste Pattern | Fix | Savings |
-|---------------|-----|---------|
-| Agent for single-file edit | Direct Edit tool | ~2.5K tokens |
-| Opus for known-pattern task | Haiku/Sonnet | ~5K tokens |
-| Explore agent for known path | Read tool directly | ~1.8K tokens |
-| Architect verify for L0-L1 | Skip or lsp_diagnostics | ~4.5K tokens |
-| Per-file agent spawning | Batch into one agent | ~2.5K × (N-1) tokens |
-
-## Integration with OMC Modes
-
-Plan Analyzer works as a **pre-processor** for OMC orchestration modes:
-
-| Mode | Plan Analyzer Role |
-|------|-------------------|
-| **ecomode** | Classifies first, ecomode further downgrades tiers |
-| **ultrawork** | Decides IF parallelism is worth it |
-| **ralph** | Optimizes agent selection per iteration |
-| **autopilot** | Pre-screens before autopilot planning |
-
-Without OMC installed, Plan Analyzer is equally effective via native tools and built-in agents.
-
-## Compared to Ecomode
-
-| Aspect | Plan Analyzer | Ecomode |
-|--------|--------------|---------|
-| Scope | All tools | OMC agents only |
-| Approach | Classify first, then route | Blindly downgrade tiers |
-| Direct edits | Yes, skips agents for L0-L1 | Still delegates |
-| Batching | Groups related files | No batching |
-| Without OMC | Fully functional | Not applicable |
-
-**Best together:** Plan Analyzer + Ecomode provides maximum token efficiency.
+- [ai-cli-online](https://github.com/huacheng/ai-cli-online) — Web terminal for Claude Code with Plan annotation panel and Chat editor
 
 ## License
 

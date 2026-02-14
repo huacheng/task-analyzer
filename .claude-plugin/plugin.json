@@ -1,10 +1,9 @@
 {
-  "name": "plan-analyzer",
-  "version": "1.0.1",
-  "description": "Task complexity grading (L0-L4) with automatic token-efficient execution path selection",
+  "name": "moonview",
+  "version": "0.1.0",
+  "description": "Task lifecycle management for Claude Code",
   "author": {
     "name": "huacheng"
   },
-  "license": "MIT",
-  "skills": "./skills/"
+  "license": "MIT"
 }
