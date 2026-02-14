@@ -84,6 +84,7 @@ For each implementation step:
 9. **After all steps** (or on failure):
    - Update `.index.json` timestamp
    - Write task-level `.summary.md` with condensed context: current progress, steps completed, key decisions, issues encountered, remaining work (integrate from directory summaries)
+   - **Consolidate references** (MANDATORY): Review ALL external knowledge gathered during execution — API patterns, library usage, tool configurations, domain techniques, workarounds discovered, documentation consulted. Save each distinct topic to `AiTasks/.references/<topic>.md` (kebab-case filename). Then overwrite `AiTasks/.references/.summary.md` with updated index of ALL reference files. Acquire `AiTasks/.references/.lock` before writing. Skip ONLY if this session performed zero external research and discovered zero new domain knowledge
    - If all steps complete: signal `{ step: "exec", result: "(done)", next: "check", checkpoint: "post-exec" }`
    - If significant issue: signal `{ step: "exec", result: "(mid-exec)", next: "check", checkpoint: "mid-exec" }`
    - If `--step N` single step complete: signal `{ step: "exec", result: "(step-N)", next: "check", checkpoint: "mid-exec" }`
@@ -138,4 +139,4 @@ For long-running executions, intermediate progress can be observed by:
 - **No mental math**: When implementation involves calculations (offsets, sizing, algorithm parameters, etc.), write a script and run it in shell instead of computing mentally
 - **Evidence-based decisions**: When uncertain about APIs, library usage, or compatibility, use shell commands to verify (curl official docs, check installed versions, read node_modules source, etc.) before implementing
 - **Concurrency**: Exec acquires `AiTasks/<module>/.lock` before proceeding and releases on completion (see Concurrency Protection in `commands/ai-cli-task.md`)
-- **Reference collection**: When exec performs web searches for implementation details, save valuable findings to `AiTasks/.references/<topic>.md` and update `AiTasks/.references/.summary.md`. Acquire `AiTasks/.references/.lock` before writing (see `.references/ Write Protection` in `commands/ai-cli-task.md`)
+- **Reference collection**: When exec encounters or researches external knowledge (API patterns, library usage, tool configurations, domain techniques), save findings immediately to `AiTasks/.references/<topic>.md`. The mandatory consolidation in step 9 serves as a safety net, but saving during execution is preferred for incremental progress

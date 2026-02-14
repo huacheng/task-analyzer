@@ -42,8 +42,7 @@ When called without annotation_file or with `--generate`:
 8. **Scan** `AiTasks/.references/.summary.md` if exists — find relevant external reference files by keyword matching against task requirements. Read matched `.references/<topic>.md` files for domain knowledge
 9. Read project codebase for context (relevant files, CLAUDE.md conventions)
 10. Read `.notes/` latest file only if exists (prior research findings and experience)
-11. **Research domain best practices**: Based on the determined task type, use shell commands (curl, web search, npm info, etc.) to find established methodologies, tools, and patterns for that domain. Do not rely solely on internal knowledge
-    - When web search yields valuable results, save research findings to `AiTasks/.references/<topic>.md` and update `AiTasks/.references/.summary.md`
+11. **Research domain best practices**: Based on the determined task type, use shell commands (curl, web search, npm info, etc.) to find established methodologies, tools, and patterns for that domain. Do not rely solely on internal knowledge. Save research findings immediately to `AiTasks/.references/<topic>.md` as they are discovered
 12. **If re-planning** (status is `re-planning` or `review`/`executing` transitioning to re-plan): archive existing `.plan.md` — rename to `.plan-superseded.md` (append numeric suffix if already exists, e.g., `.plan-superseded-2.md`). This prevents `exec` from reading outdated steps alongside the new plan
 13. Generate implementation plan using **domain-appropriate methodology** (incorporating check feedback, bugfix history, prior notes, cross-task experience, and researched best practices)
 14. Write plan to `.plan.md` in the task module
@@ -51,11 +50,12 @@ When called without annotation_file or with `--generate`:
 16. **Update** `.test/.summary.md` — overwrite with condensed summary of ALL criteria & results files in `.test/`
 17. Create `.notes/<YYYY-MM-DD>-<summary>-plan.md` with research findings and key decisions
 18. **Update** `.notes/.summary.md` — overwrite with condensed summary of ALL notes files in `.notes/`
-19. Write task-level `.summary.md` with condensed context: plan overview, key decisions, requirements summary, known constraints (integrate from directory summaries)
-20. Update `.index.json`: set `type` field (if not already set or if task nature changed), status → `planning` (from `draft`/`planning`/`blocked`) or `re-planning` (from `review`/`executing`/`re-planning`), update timestamp. If the **new** status is `re-planning`, set `phase: needs-check`. For all other **new** statuses, clear `phase` to `""`. Reset `completed_steps` to `0` (new/revised plan invalidates prior progress)
-21. **Git commit**: `-- ai-cli-task(<module>):plan generate implementation plan`
-22. **Write** `.auto-signal`: `{ step: "plan", result: "(generated)", next: "check", checkpoint: "post-plan" }`
-23. Report plan summary to user
+19. **Consolidate references** (MANDATORY): Review ALL domain knowledge gathered during this planning session — web searches, API docs, library research, tool documentation, codebase conventions, best practices. Save each distinct topic to `AiTasks/.references/<topic>.md` (kebab-case filename). Then overwrite `AiTasks/.references/.summary.md` with updated index of ALL reference files. Acquire `AiTasks/.references/.lock` before writing. Skip ONLY if this session performed zero external research and discovered zero new domain knowledge
+20. Write task-level `.summary.md` with condensed context: plan overview, key decisions, requirements summary, known constraints (integrate from directory summaries)
+21. Update `.index.json`: set `type` field (if not already set or if task nature changed), status → `planning` (from `draft`/`planning`/`blocked`) or `re-planning` (from `review`/`executing`/`re-planning`), update timestamp. If the **new** status is `re-planning`, set `phase: needs-check`. For all other **new** statuses, clear `phase` to `""`. Reset `completed_steps` to `0` (new/revised plan invalidates prior progress)
+22. **Git commit**: `-- ai-cli-task(<module>):plan generate implementation plan`
+23. **Write** `.auto-signal`: `{ step: "plan", result: "(generated)", next: "check", checkpoint: "post-plan" }`
+24. Report plan summary to user
 
 **Context management**: When `.summary.md` exists, read it as the primary context source instead of reading all files from `.analysis/`, `.bugfix/`, `.notes/`. Only read the latest (last by filename sort) file from each directory for detailed info on the most recent assessment/issue/note.
 
