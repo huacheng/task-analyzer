@@ -1,6 +1,6 @@
 ---
 name: report
-description: Generate a completion report for a finished task module
+description: "Generate a completion report for a finished task module. Triggered after merge completes, or manually for blocked/cancelled tasks to document progress and lessons learned."
 arguments:
   - name: task_module
     description: "Path to the task module directory (e.g., AiTasks/auth-refactor)"

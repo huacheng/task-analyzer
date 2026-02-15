@@ -1,6 +1,6 @@
 ---
 name: init
-description: Initialize a new task module in AiTasks/ directory with system files, git branch, and optional worktree
+description: "Initialize a new task module in AiTasks/ directory with system files, git branch, and optional worktree. Use when starting a new feature, bug fix, or refactoring task that needs structured lifecycle tracking."
 arguments:
   - name: module_name
     description: "Name of the task module directory to create (e.g., auth-refactor, add-search)"

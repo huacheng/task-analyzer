@@ -1,5 +1,5 @@
 ---
-description: "Task lifecycle management — init, plan, research, check, verify, exec, merge, report, auto, cancel, list, annotate, summarize"
+description: "Structured task lifecycle management with 13 skills for AI-driven development. Use when tasks need structured planning, domain-aware verification, and tracked execution through AiTasks/ directory workflow. Sub-commands: init, plan, research, check, verify, exec, merge, report, auto, cancel, list, annotate, summarize."
 arguments:
   - name: subcommand
     description: "Sub-command: init, plan, research, check, verify, exec, merge, report, auto, cancel, list, annotate, summarize"
@@ -32,7 +32,7 @@ AiTasks/
 ├── .references/               # External reference materials (by topic, collected by research sub-command)
 │   ├── .summary.md            # Condensed index of all reference files (overwritten on each new entry)
 │   └── <topic>.md             # One file per topic, kebab-case (e.g., express-middleware.md)
-├── .type-profiles/            # Shared type profiles (auto-maintained by research/report for non-seed types)
+├── .type-profiles/            # Shared type profiles (auto-maintained by research/report for ALL types)
 │   └── <type>.md              # Cross-task domain profile (methodology, verification, patterns, phase intelligence)
 └── <module-name>/             # One directory per task module
     ├── .index.json            # Task metadata (JSON) — machine-readable
@@ -370,6 +370,7 @@ AiTasks/**/.auto-stop
 AiTasks/**/.lock
 AiTasks/.experiences/.lock
 AiTasks/.references/.lock
+AiTasks/.type-profiles/.lock
 ```
 
 ---
@@ -446,10 +447,10 @@ Hooks are **best-effort** — failures are logged but do not block the status tr
 skills/<name>/
 ├── SKILL.md                # Core logic: steps, state transitions, signals, git
 └── references/             # On-demand reference material (loaded when needed)
-    ├── task-type-*.md      # Domain-specific guidelines (plan/check/exec)
-    ├── annotation-*.md     # Annotation processing details (plan)
-    └── *.md                # Other reference docs
+    └── *.md                # Domain guidelines, annotation processing, audit frameworks, etc.
 ```
+
+Per-type seed methodology files are centralized in `skills/init/references/seed-types/` (one file per type, with `.summary.md` index). Each per-type file contains Phase Intelligence for all 4 lifecycle phases (plan/verify/check/exec), structured to mirror `.type-profile.md`.
 
 **Main SKILL.md** contains the workflow: prerequisites, execution steps, state transitions, git conventions, `.auto-signal` definitions, and notes. It should be self-sufficient for understanding the sub-command's behavior.
 
@@ -471,9 +472,9 @@ Research codebase + `.target.md` → write implementation plan to `.plan.md` →
 
 ### research
 
-`/ai-cli-task:research <task_module> [--scope full|gap]`
+`/ai-cli-task:research <task_module> [--scope full|gap] [--caller plan|verify|check|exec]`
 
-Collect and organize external domain knowledge into `AiTasks/.references/`. Acts as the intelligence arm of the task lifecycle — separating research from planning for clearer logic. Two scopes: `full` (comprehensive, first plan) and `gap` (incremental, re-plan). Status-neutral — does not change task status. Invoked by `plan` automatically (first plan → `--scope full`, re-plan → `--scope gap` conditional), or standalone for preparatory/supplementary research.
+Collect and organize external domain knowledge into `AiTasks/.references/`, perform type discovery & refinement, and build `.type-profile.md`. Acts as the intelligence arm of the task lifecycle — separating research from other phases for clearer logic. Two scopes: `full` (comprehensive, first plan) and `gap` (incremental, fill missing topics). `--caller` specifies the invoking phase (default `plan`), directing collection focus and `.auto-signal` routing. Status-neutral — does not change task status. Invoked automatically from multiple phases: `plan` (first plan → `--scope full`, re-plan → `--scope gap`), `verify`/`check`/`exec` (when missing domain knowledge → `--scope gap --caller <phase>`), or standalone for preparatory/supplementary research.
 
 ### check
 
