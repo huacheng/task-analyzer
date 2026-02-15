@@ -82,7 +82,7 @@ Callable independently for preparatory research before any phase, or to suppleme
      - For novel domains: **register** new type in `AiTasks/.type-registry.md` (append row with date + source task)
      - Write or update `.type-profile.md` with all sections including **Phase Intelligence** (what to research per phase)
      - Update `type` in `.index.json` (use `A|B` format for hybrids)
-     - **Sync to shared**: if type is NOT in static reference tables → copy `.type-profile.md` to `AiTasks/.type-profiles/<primary-type>.md` (acquire `.type-profiles/.lock` first)
+     - **Sync to shared**: copy `.type-profile.md` to `AiTasks/.type-profiles/<primary-type>.md` (acquire `.type-profiles/.lock` first). For ALL types — seed types also benefit from cross-task profile accumulation
    - If `--caller verify|check|exec` and `.type-profile.md` exists:
      - Check if current phase's section in profile is adequate (e.g., verify caller → "Verification Standards" section)
      - If inadequate or missing: web search for domain-specific methodology for this phase
