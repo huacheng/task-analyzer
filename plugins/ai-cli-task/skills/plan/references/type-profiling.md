@@ -22,7 +22,7 @@ The `type` field uses a simple string with pipe separator for hybrids:
 
 **Validation regex**: Each segment must match `[a-zA-Z0-9_:-]+`. Full type field: `[a-zA-Z0-9_:|-]+` (pipe allowed as separator). Parsing: `type.split('|')` → `[0]` is primary, `[1:]` are secondary.
 
-**Experiences mapping**: For hybrid type `A|B`, `report` writes to **both** `AiTasks/.experiences/A.md` and `AiTasks/.experiences/B.md`. Plan reads experience files for all segments.
+**Experiences mapping**: For hybrid type `A|B`, `report` writes to **both** `AiTasks/.experiences/A/<module>.md` and `AiTasks/.experiences/B/<module>.md`, updating per-type `.summary.md` in each directory. Plan reads `.summary.md` for all segments, drilling into individual entries when relevant.
 
 ## Type Determination Flow
 

@@ -29,7 +29,7 @@ Generate an implementation plan from `.target.md`. Annotation processing is hand
 6. Read `.analysis/` latest file only if exists (address check feedback from NEEDS_REVISION)
 7. Read `.bugfix/` latest file only if exists (address most recent mid-exec issue from REPLAN)
 8. Read `.test/` latest criteria and results files if exists (incorporate lessons learned)
-9. Read `AiTasks/.experiences/<type>.md` if exists — cross-task experience from completed tasks of the same domain type. For hybrid types (`A|B`), read experience files for **all** pipe-separated segments (e.g., both `A.md` and `B.md`)
+9. Read `AiTasks/.experiences/<type>/.summary.md` if exists — condensed cross-task experience from completed tasks of the same domain type. For hybrid types (`A|B`), read summary files for **all** pipe-separated segments. If summary references specific entries relevant to current task, read those `AiTasks/.experiences/<type>/<module>.md` files for detail
 10. **Read** `AiTasks/.references/.summary.md` if exists — find relevant external reference files by keyword matching against task requirements. Read matched `.references/<topic>.md` files for domain knowledge
 11. Read project codebase for context (relevant files, CLAUDE.md conventions)
 12. Read `.notes/` latest file only if exists (prior research findings and experience)
