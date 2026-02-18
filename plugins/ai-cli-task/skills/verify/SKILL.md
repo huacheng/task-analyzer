@@ -40,6 +40,7 @@ Run domain-adapted tests and verification procedures for a task module, producin
 7. **Gap check**: if `.type-profile.md` lacks verification standards OR `.references/` lacks testing/verification knowledge for the task `type`, trigger `research --scope gap --caller verify` to collect missing references before proceeding
 8. **Determine** verification strategy: use `.type-profile.md` "Verification Standards" first, supplement with per-type seed file `init/references/seed-types/<type>.md` (verify section), combine with `.references/` domain knowledge. If verification reveals that `.type-profile.md` standards are inadequate, update its "Verification Standards" section with findings. For hybrid types (`A|B`), read seed files and experience for all segments
 9. **Execute** verification procedures per checkpoint scope:
+   - **Optional delegation — tdd** (`full` or `step-N` checkpoint, `type` contains `software`): Follow `auto/references/plugin-delegation.md` to attempt matching the `tdd` capability slot. If matched, invoke via Task subagent — delegate test generation/execution, merge results into standard verification output. No match or failure → continue standard verification flow
    - `quick`: build, lint, type check — fast feedback loop
    - `full`: all `.test/` criteria, acceptance tests from `.target.md`, regression tests
    - `step-N`: only criteria associated with step N from `.test/` criteria file

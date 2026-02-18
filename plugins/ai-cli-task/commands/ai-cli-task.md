@@ -25,6 +25,7 @@ Single entry point for task lifecycle management in the `AiTasks/` directory.
 AiTasks/
 ├── .index.json                # Root index (task module listing, JSON array)
 ├── .type-registry.md          # Auto-expanding type registry (seed + discovered types, shared across tasks)
+├── .plugin-registry.md        # Plugin capability cache (auto-maintained by delegation, see plugin-delegation.md)
 ├── .experiences/              # Cross-task knowledge base (by type, distilled from completed tasks)
 │   ├── .summary.md            # Top-level index of all type directories (overwritten on each new entry)
 │   └── <type>/                # One directory per task type
@@ -452,6 +453,10 @@ Three shared directories require locks before writing (all use the same lock pro
 1. **Git recovery**: `git show HEAD:AiTasks/<module>/.index.json` — restore from latest committed version
 2. **If git recovery fails**: Reconstruct minimal `.index.json` with `"status": "draft"`, `"phase": ""`, preserve only what's parseable
 3. **Log**: Record corruption event and recovery action in `.analysis/<date>-index-recovery.md`
+
+### Plugin Delegation (Extension Point)
+
+Lifecycle skills can discover and delegate to system-installed external plugins at runtime, following the protocol in `auto/references/plugin-delegation.md`. Capability slots include: `doc-parse`, `brainstorm`, `code-review`, `frontend-design`, `debugging`, `tdd`, and `domain-*` (open-ended). Delegation executes through Task subagent isolation — the main context receives only a <=500 char summary. All delegation is optional: when no matching plugin is found, skills fall back to their existing inline logic. Discovered capabilities are cached in `AiTasks/.plugin-registry.md` for faster future matching.
 
 ### Lifecycle Hooks (Extension Point)
 
